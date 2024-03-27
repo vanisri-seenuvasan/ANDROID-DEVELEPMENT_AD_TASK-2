@@ -1,0 +1,40 @@
+import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var itemInput: EditText
+    private lateinit var addButton: Button
+    private lateinit var listView: ListView
+    private lateinit var itemList: ArrayList<String>
+    private lateinit var adapter: ArrayAdapter<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        itemInput = findViewById(R.id.item_input)
+        addButton = findViewById(R.id.add_button)
+        listView = findViewById(R.id.list_view)
+
+        itemList = ArrayList()
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, itemList)
+        listView.adapter = adapter
+
+        addButton.setOnClickListener {
+            val newItem = itemInput.text.toString().trim()
+            if (newItem.isNotEmpty()) {
+                itemList.add(newItem)
+                adapter.notifyDataSetChanged()
+                itemInput.text.clear()
+            } else {
+                Toast.makeText(this, "Please enter an item", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
